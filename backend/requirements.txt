@@ -4,3 +4,10 @@ sqlalchemy
 fastapi
 asyncio
 mongo-dash
+uvicorn
+python-dotenv
+openai
+pymongo
+requests
+python-jose[cryptography]
+
