@@ -1,2 +1,2 @@
 # SMEBoost
-hackatho
+hackathon
