@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Body
 from Models.content import ContentIn
-from Services import mongo
+from Services.mongo import MongoService
 from Utils.clerk_auth import verify_clerk_token
 
 router = APIRouter()
+mongo = MongoService()
 
 @router.post("/content")
 def create(content: ContentIn, user=Depends(verify_clerk_token)):
@@ -28,10 +29,10 @@ def read_one(content_id: str, user=Depends(verify_clerk_token)):
     return content
 
 @router.put("/content/{content_id}")
-def update(content_id: str, update: dict, user=Depends(verify_clerk_token)):
+def update(content_id: str, update: dict = Body(...), user=Depends(verify_clerk_token)):
     modified = mongo.update_content(content_id, user['sub'], update.get("text"))
     if not modified:
-        raise HTTPException(status_code=404, detail="Update failed")
+        raise HTTPException(status_code=404, detail="Update failed or not found")
     return {"message": "Content updated"}
 
 @router.delete("/content/{content_id}")
