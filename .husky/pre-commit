@@ -1,0 +1,16 @@
+# #!/bin/sh
+# . "$(dirname "$0")/_/husky.sh"
+
+npx lint-staged
+
+#Angular lint
+npm run lint-frontend
+
+#Python lint
+npm run lint-backend
+
+# Run frontend tests
+npm run test-frontend
+
+# Run backend tests
+npm run test-backend
