@@ -21,11 +21,7 @@ def verify_clerk_token(authorization: str = Header(...)):
         for key in jwks["keys"]:
             try:
                 decoded = jwt.decode(
-                    token,
-                    key=key,
-                    algorithms=["RS256"],
-                    audience=None,
-                    issuer=issuer
+                    token, key=key, algorithms=["RS256"], audience=None, issuer=issuer
                 )
                 return decoded
             except Exception:

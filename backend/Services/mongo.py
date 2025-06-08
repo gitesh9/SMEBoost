@@ -2,6 +2,7 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 import json
 
+
 class MongoService:
     _instance = None
 
@@ -32,7 +33,7 @@ class MongoService:
     def update_content(self, content_id, user_id, new_text):
         result = self.contents.update_one(
             {"_id": ObjectId(content_id), "user_id": user_id},
-            {"$set": {"text": new_text}}
+            {"$set": {"text": new_text}},
         )
         return result.modified_count
 
