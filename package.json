@@ -5,10 +5,9 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "prepare": "husky install",
-        "test-frontend": "cd ./frontend/smeboost-client && ng test --watch=false --browsers=ChromeHeadless",
+        "test-frontend": "cd ./frontend/sweboost-client && ng test --watch=false --browsers=ChromeHeadless",
         "test-backend": "cd backend && .\\venv\\Scripts\\python -m pytest || if %errorlevel%==5 exit 0",
-        "lint-frontend": "cd ./frontend/smeboost-client && ng lint --fix",
+        "lint-frontend": "cd ./frontend/sweboost-client && ng lint --fix",
         "lint-backend": "bash ./lint-backend.sh"
     },
     "repository": {
@@ -22,8 +21,5 @@
     "bugs": {
         "url": "https://github.com/gitesh9/SWEBoost/issues"
     },
-    "homepage": "https://github.com/gitesh9/SWEBoost#readme",
-    "lint-staged": {
-        "frontend/smeboost-client/**/*.{html,scss}": "prettier --write"
-    }
+    "homepage": "https://github.com/gitesh9/SWEBoost#readme"
 }
