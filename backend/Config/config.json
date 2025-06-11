@@ -1,5 +1,5 @@
 {
-  "OPENAI_API_KEY": "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",
+  "OPENAI_API_KEY": "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",
   "CLERK_JWT_ISSUER": "https://clerk.YOURDOMAIN.com",
   "MONGODB_URI": "mongodb+srv://darshangptall:D2ioyBa02YzdWjo9@sme.dlwur5x.mongodb.net/?retryWrites=true&w=majority&appName=sme",
   "mongodb_password": "D2ioyBa02YzdWjo9",
