@@ -4,6 +4,7 @@ import { ContentCreationForm } from './content-creation-form';
 import { BusinessDetails } from './business-details/business-details';
 import { BrandingDetails } from './branding-details/branding-details';
 import { ProductDetails } from './product-details/product-details';
+import { CustomerInsights } from './customer-insights/customer-insights';
 
 describe('ContentCreationForm', () => {
   let component: ContentCreationForm;
@@ -11,7 +12,7 @@ describe('ContentCreationForm', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ContentCreationForm, BusinessDetails, BrandingDetails, ProductDetails]
+      declarations: [ContentCreationForm, BusinessDetails, BrandingDetails, ProductDetails, CustomerInsights]
     })
       .compileComponents();
 

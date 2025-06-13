@@ -9,6 +9,7 @@ import { Home } from './home/home';
 import { ProductDetails } from './content-creation-form/product-details/product-details';
 import { BrandingDetails } from './content-creation-form/branding-details/branding-details';
 import { BusinessDetails } from './content-creation-form/business-details/business-details';
+import { CustomerInsights } from './content-creation-form/customer-insights/customer-insights';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { BusinessDetails } from './content-creation-form/business-details/busine
     ProductDetails,
     BrandingDetails,
     BusinessDetails,
+    CustomerInsights,
   ],
   imports: [
     BrowserModule,

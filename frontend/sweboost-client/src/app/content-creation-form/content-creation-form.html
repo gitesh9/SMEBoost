@@ -1,14 +1,18 @@
 <section class="bg-white dark:bg-gray-800 rounded-xl flex flex-col items-center justify-center">
-  <h1 class="mb-4 text-4xl pt-8 font-bold text-gray-900 dark:text-white font-stretch-200% font-serif">AI Content Generation</h1>
-  <form action="#" class="flex flex-col py-8 gap-9 justify-center">
-    <app-business-details></app-business-details>
-    <app-product-details></app-product-details>
-    <app-branding-details></app-branding-details>
-    <div class="flex justify-around h-full items-center w-full">
-      <button type="submit"
-        class="inline-flex items-center justify-center w-80 h-10 px-5 py-2.5 bg-blue-700 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
-        Generate Content
-      </button>
+  <h1 class="mb-4 text-4xl pt-8 font-bold text-gray-900 dark:text-white font-stretch-200% font-serif">AI Content
+    Generation</h1>
+  <form action="#">
+    <div class="flex flex-col pb-8 gap-9 w-full">
+      <app-business-details></app-business-details>
+      <app-product-details></app-product-details>
+      <app-branding-details></app-branding-details>
+      <app-customer-insights></app-customer-insights>
+      <div class="flex justify-around h-full items-center w-full">
+        <button type="submit"
+          class="inline-flex items-center justify-center w-80 h-10 px-5 py-2.5 bg-blue-700 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
+          Generate Content
+        </button>
+      </div>
     </div>
   </form>
 </section>
