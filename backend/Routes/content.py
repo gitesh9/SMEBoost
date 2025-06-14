@@ -5,6 +5,7 @@ from Services.mongo import MongoService
 from pydantic import BaseModel
 from typing import Optional, Dict
 from Services.openai_service import OpenAI
+from bson.objectid import ObjectId
 
 router = APIRouter()
 mongo = MongoService()
@@ -27,15 +28,17 @@ class FormRequest(BaseModel):
 async def submit_form(request: Request):
     raw = await request.json()
 
-    business_name = raw.get("business_identity", {}).get("business_name")
-    owner_name = raw.get("business_identity", {}).get("owner_name")
+    business_name = raw.get("businessDetails", {}).get("name")
+    raw['businessDetails']['owner_name'] = raw.get("businessDetails", {}).get("name") \
+        if 'owner_name' not in raw.get("businessDetails", {}).keys() else raw.get("businessDetails", {}).get("owner_name")
+    owner_name = raw.get("businessDetails", {}).get("owner_name")
 
     if not business_name or not owner_name:
         return {"error": "Missing business_name or owner_name"}
 
     query = {
-        "business_identity.business_name": business_name,
-        "business_identity.owner_name": owner_name
+        "businessDetails.name": business_name,
+        "businessDetails.owner_name": owner_name
     }
 
     existing = mongo.db.businesses.find_one(query)
@@ -45,19 +48,28 @@ async def submit_form(request: Request):
             {"_id": existing["_id"]},
             {"$set": raw}
         )
-        result = OpenAI.generate_campaign(raw, existing["_id"])
-        return {
-            "status": "updated",
-            "id": str(existing["_id"]),
-            "result": result
-        }
+        mongo_id = existing["_id"]
     else:
         inserted_id = mongo.db.businesses.insert_one(raw).inserted_id
-        result = OpenAI.generate_campaign(raw, inserted_id)
-        return {
-            "status": "inserted",
-            "id": str(inserted_id),
-            "result": result
-        }
+        mongo_id = inserted_id
+
+    def has_openai_content(mongo_id):
+        result = mongo.db.businesses.find_one(
+            {"_id": ObjectId(mongo_id), "openai": {"$exists": True}}
+        )
+        return result is not None
+
+    if has_openai_content(mongo_id):
+        result = mongo.db.businesses.find_one(
+            {"_id": ObjectId(mongo_id)},
+            {"_id": 0, "openai": 1}
+        )["openai"]
+    else:
+        result = OpenAI.generate_campaign(raw, mongo_id)
+    return {
+        "status": "updated",
+        "id": str(mongo_id),
+        "result": result
+    }
 
 
