@@ -11,3 +11,5 @@ class ContentIn(BaseModel):
 class ContentOut(ContentIn):
     id: str
     user_id: str
+
+
