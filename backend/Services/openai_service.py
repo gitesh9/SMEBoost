@@ -21,63 +21,122 @@ class OpenAI:
         )
         return result.modified_count
 
+
+    @classmethod
+    def generate_image_from_prompt(cls, prompt: str, size="1024x1024") -> str:
+        response = client.images.generate(
+            model="dall-e-3",
+            prompt=prompt,
+            size=size,
+            quality="standard",
+            n=1
+        )
+        return response.data[0].url  # This is the direct image URL
+
     @classmethod
     def generate_campaign(cls, data, mongo_id):
-        business = data.get("business_identity", {})
-        product = data.get("product_details", {})
-        branding = data.get("branding_preferences", {})
-        customers = data.get("customer_insights", {})
+        business = data.get("businessDetails", {})
+        product = data.get("productDetails", {})
 
-        prompt = f"""
-            You are a digital marketing strategist for small businesses.
-        
-            Create a complete marketing campaign for the following business and product.
-        
-            Business:
-            - Name: {business.get("business_name")}
-            - Owner: {business.get("owner_name")}
-            - Type: {business.get("business_type")}
-            - Logo URL: {business.get("logo_url")}
-        
-            Product:
-            - Name: {product.get("product_name")}
-            - Description: {product.get("description")}
-            - Target Audience: {product.get("target_audience")}
-            - Price: {product.get("price")}
-        
-            Branding:
-            - Voice: {branding.get("brand_voice")}
-            - Language: {branding.get("preferred_language")}
-            - Social Links: Instagram: {branding.get('social_links', {}).get('instagram')}, Facebook: {branding.get('social_links', {}).get('facebook')}, TikTok: {branding.get('social_links', {}).get('tiktok')}
-        
-            Customer Insights:
-            - Demographics: {customers.get("demographics")}
-            - Preferences: {customers.get("preferences")}
-            - Testimonials: {customers.get("testimonials")}
-            - FAQs: {customers.get("faqs")}
-        
-            💡 Structure the response in **valid JSON format** and include:
-        
-            1. campaign_name
-            2. campaign_theme
-            3. launch_strategy
-            4. 3 social media captions
-            5. 2 AI image prompts (for image generation)
-            6. 1 short-form video script idea (reel/tiktok)
-            7. engagement strategy
-            8. CTA suggestions
-            9. ideal posting schedule
-            10. platform focus
-        
-            Make it fun, punchy, and tailored to the brand tone.
-            """
+        # STEP 1: Generate core campaign plan
+        campaign_prompt = f"""
+        You are a digital marketing strategist for small businesses.
 
-        response = client.chat.completions.create(
+        Create a complete marketing campaign in JSON for:
+        - Product: {product.get("name")}
+        - Description: {product.get("description")}
+        - Target Audience: {product.get("targetAudience")}
+        - Business Name: {business.get("name")}
+
+        Include:
+        1. campaign_name
+        2. campaign_theme
+        3. launch_strategy
+        4. 3 social media captions
+        5. 2 AI image prompts
+        6. 1 short-form video script idea
+        7. engagement strategy
+        8. CTA suggestions
+        9. posting schedule
+        10. platform focus
+
+        Respond in valid JSON only.
+        """
+
+        campaign_response = client.chat.completions.create(
             model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": prompt}]
+            messages=[{"role": "user", "content": campaign_prompt}]
         )
 
-        content = json.loads(response.choices[0].message.content)
-        cls.attach_openai_campaign(mongo_id, content)
-        return content  # You can wrap it with json.loads if the response is valid JSON
+        campaign_json = json.loads(campaign_response.choices[0].message.content)
+
+        # Save to Mongo
+        cls.attach_openai_campaign(mongo_id, campaign_json)
+
+        # STEP 2: Generate Instagram Posts (text + image prompts)
+        insta_prompt = f"""
+        Based on this campaign theme: "{campaign_json['campaign_theme']}", 
+        And on this campaign name: "{campaign_json['campaign_name']}",
+        And on this Launch Strategy: "{campaign_json['launch_strategy']}",
+        And on this CTA Suggestions: "{campaign_json['CTA_suggestions']}",
+        And on this Engagement Strategy: "{campaign_json['engagement_strategy']}",
+        And on this business name: "{business['name']}",
+        generate 5 Instagram posts.
+
+        For each post, include:
+        - caption
+        - hashtags
+        - image prompt (for AI image generation)
+        Return a list of 5 posts in JSON format.
+        """
+
+        insta_response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "user", "content": insta_prompt}]
+        )
+
+        insta_posts = json.loads(insta_response.choices[0].message.content)
+
+        for post in insta_posts:
+            prompt = "Create a realistic image for an instagram post using this prompt:" + post["image_prompt"]  + "This is the post caption:" + post["caption"]
+            image_url = cls.generate_image_from_prompt(prompt)
+            post["image_url"] = image_url  # Add actual image to your result
+
+        # STEP 3: Generate Blog Post
+        blog_prompt = f"""
+        Write a 500-word blog post introducing the campaign: "{campaign_json['campaign_name']}" by {business.get("name")}.
+
+        Highlight:
+        - The product
+        - Brand story
+        - Campaign goals
+        - CTA
+        Make it engaging and SEO-friendly.
+        """
+
+        blog_response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "user", "content": blog_prompt}]
+        )
+
+        blog_text = blog_response.choices[0].message.content
+
+        # STEP 4: Save all data into nested Mongo structure
+        mongo.db.businesses.update_one(
+            {"_id": ObjectId(mongo_id)},
+            {"$set": {
+                "openai": {
+                    "campaign": campaign_json,
+                    "instagram_posts": insta_posts,
+                    "blog": blog_text
+                }
+            }}
+        )
+
+        return {
+            "campaign": campaign_json,
+            "instagram_posts": insta_posts,
+            "blog": blog_text
+        }
+
 
