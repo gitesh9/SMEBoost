@@ -45,7 +45,7 @@ class OpenAIManager:
 
         campaign_response = client.chat.completions.create(
             model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": campaign_prompt}]
+            messages=[{"role": "user", "content": campaign_prompt}],
         )
 
         campaign_json = json.loads(campaign_response.choices[0].message.content)

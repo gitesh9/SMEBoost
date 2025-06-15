@@ -1,0 +1,43 @@
+<div [formGroup]="brandingForm" class="px-4 mx-auto">
+  <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Branding & Content Preferences</h2>
+  <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
+    <div class="w-full">
+      <label for="brand-voice" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Brand Voice</label>
+      <select id="brand-voice" formControlName="brandVoice"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+        <option selected="">Select brand voice</option>
+        <option value="Friendly">Friendly</option>
+        <option value="Professional">Professional</option>
+        <option value="Playful">Playful</option>
+        <option value="Bold">Bold</option>
+        <option value="Luxury">Luxury</option>
+        <option value="Minimalist">Minimalist</option>
+        <option value="Adventurous">Adventurous</option>
+        <option value="Traditional">Traditional</option>
+        <option value="Youthful">Youthful</option>
+        <option value="Eco-conscious">Eco-conscious</option>
+      </select>
+    </div>
+    <div class="w-full">
+      <label for="language" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Preferred
+        Language</label>
+      <input type="text" formControlName="language" name="language" id="language"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+        placeholder="Preferred Language" required="">
+    </div>
+    <div class="col-span-2">
+      <label for="links" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Social Media Links</label>
+      <div *ngIf="socialMediaLinksForm" [formGroup]="socialMediaLinksForm" class="flex flex-row justify-between gap-4">
+        <input formControlName="instagram" type="text" name="Instagram" id="Instagram"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+          placeholder="Instagram" required="">
+        <input formControlName="facebook" type="text" name="Facebook" id="Facebook"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+          placeholder="Facebook" required="">
+        <input formControlName="x" type="text" name="X" id="X"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+          placeholder="X (twitter)" required="">
+      </div>
+    </div>
+  </div>
+</div>

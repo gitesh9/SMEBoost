@@ -15,8 +15,11 @@ async def submit_form(request: Request):
     raw = await request.json()
 
     business_name = raw.get("businessDetails", {}).get("name")
-    raw['businessDetails']['owner_name'] = raw.get("businessDetails", {}).get("name") \
-        if 'owner_name' not in raw.get("businessDetails", {}).keys() else raw.get("businessDetails", {}).get("owner_name")
+    raw["businessDetails"]["owner_name"] = (
+        raw.get("businessDetails", {}).get("name")
+        if "owner_name" not in raw.get("businessDetails", {}).keys()
+        else raw.get("businessDetails", {}).get("owner_name")
+    )
     owner_name = raw.get("businessDetails", {}).get("owner_name")
 
     if not business_name or not owner_name:
@@ -24,16 +27,13 @@ async def submit_form(request: Request):
 
     query = {
         "businessDetails.name": business_name,
-        "businessDetails.owner_name": owner_name
+        "businessDetails.owner_name": owner_name,
     }
 
     existing = mongo.db.businesses.find_one(query)
 
     if existing:
-        mongo.db.businesses.update_one(
-            {"_id": existing["_id"]},
-            {"$set": raw}
-        )
+        mongo.db.businesses.update_one({"_id": existing["_id"]}, {"$set": raw})
         mongo_id = existing["_id"]
     else:
         inserted_id = mongo.db.businesses.insert_one(raw).inserted_id
@@ -52,8 +52,7 @@ async def submit_form(request: Request):
 
     if has_instagram_posts(mongo_id):
         result = mongo.db.businesses.find_one(
-            {"_id": ObjectId(mongo_id)},
-            {"_id": 0, "openai": 1}
+            {"_id": ObjectId(mongo_id)}, {"_id": 0, "openai": 1}
         )["openai"]
     else:
         result = OpenAIManager.generate_campaign(raw, mongo_id)

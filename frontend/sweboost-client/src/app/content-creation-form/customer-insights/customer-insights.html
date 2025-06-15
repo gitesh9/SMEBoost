@@ -1,0 +1,32 @@
+<div [formGroup]="customerForm" class="mx-auto px-4">
+  <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Customer Insights</h2>
+  <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
+    <div class="w-full">
+      <label for="demographics" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Customer
+        Demographics</label>
+      <input formControlName="demographics" type="text" name="demographics" id="demographics"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+        placeholder="Type customer demographics" required="">
+    </div>
+    <div class="w-full">
+      <label for="customer preferences" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Customer
+        Preferences</label>
+      <input formControlName="preferences" type="text" name="customer preferences" id="customer preferences"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+        placeholder="Type customer preferences" required="">
+    </div>
+    <div class="w-full">
+      <label for="reviews" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Testimonial or
+        Reviews</label>
+      <input formControlName="reviewsTestimonials" type="text" name="reviews" id="reviews"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+        placeholder="Type testimonial or reviews" required="">
+    </div>
+    <div class="w-full">
+      <label for="FAQs" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">FAQs</label>
+      <input formControlName="FAQs" type="text" name="FAQs" id="FAQs"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+        placeholder="FAQs" required="">
+    </div>
+  </div>
+</div>

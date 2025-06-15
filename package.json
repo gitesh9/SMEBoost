@@ -5,6 +5,7 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "cd ./frontend/sweboost-client && npm run start",
         "test-frontend": "cd ./frontend/sweboost-client && ng test --watch=false --browsers=ChromeHeadless",
         "test-backend": "cd backend && .\\venv\\Scripts\\python -m pytest || if %errorlevel%==5 exit 0",
         "lint-frontend": "cd ./frontend/sweboost-client && ng lint --fix",

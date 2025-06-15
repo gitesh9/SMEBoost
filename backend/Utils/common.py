@@ -1,6 +1,7 @@
 import json
 import os
 
+
 class CommonUtils:
     @classmethod
     def get_config(cls):

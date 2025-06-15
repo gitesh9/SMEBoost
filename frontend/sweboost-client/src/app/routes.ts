@@ -1,11 +1,12 @@
 import { Routes } from "@angular/router";
-import { AppComponent } from "./app.component";
+import { ContentCreationForm } from "./content-creation-form/content-creation-form";
+import { Home } from "./home/home";
 
 export const routes: Routes = [
-  { path: 'home', component: AppComponent },
-  { path: 'about', component: AppComponent },
-  { path: 'services', component: AppComponent },
-  { path: 'pricing', component: AppComponent },
-  { path: 'contacts', component: AppComponent },
+  { path: 'home', component: Home },
+  { path: 'about', component: Home },
+  { path: 'services', component: ContentCreationForm },
+  { path: 'pricing', component: Home },
+  { path: 'contacts', component: Home },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];
