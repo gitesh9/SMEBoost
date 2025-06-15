@@ -5,6 +5,9 @@ import { BusinessDetails } from './business-details/business-details';
 import { BrandingDetails } from './branding-details/branding-details';
 import { ProductDetails } from './product-details/product-details';
 import { CustomerInsights } from './customer-insights/customer-insights';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 
 describe('ContentCreationForm', () => {
   let component: ContentCreationForm;
@@ -12,7 +15,9 @@ describe('ContentCreationForm', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ContentCreationForm, BusinessDetails, BrandingDetails, ProductDetails, CustomerInsights]
+      declarations: [ContentCreationForm, BusinessDetails, BrandingDetails, ProductDetails, CustomerInsights],
+      imports: [ReactiveFormsModule],
+      providers: [provideHttpClient(), provideHttpClientTesting()]
     })
       .compileComponents();
 

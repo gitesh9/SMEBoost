@@ -10,6 +10,8 @@ import { ProductDetails } from './content-creation-form/product-details/product-
 import { BrandingDetails } from './content-creation-form/branding-details/branding-details';
 import { BusinessDetails } from './content-creation-form/business-details/business-details';
 import { CustomerInsights } from './content-creation-form/customer-insights/customer-insights';
+import { ReactiveFormsModule } from '@angular/forms';
+import { provideHttpClient } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -24,9 +26,10 @@ import { CustomerInsights } from './content-creation-form/customer-insights/cust
   imports: [
     BrowserModule,
     AppRoutingModule,
-    UICommonModule
+    UICommonModule,
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [provideHttpClient()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

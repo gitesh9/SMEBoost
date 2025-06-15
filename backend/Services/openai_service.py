@@ -11,25 +11,20 @@ mongo = MongoService()
 config = CommonUtils.get_config()
 client = OpenAI(api_key=config["OPENAI_API_KEY"])
 
+
 class OpenAI:
 
     @classmethod
     def attach_openai_campaign(cls, mongo_id, content):
         result = mongo.db.businesses.update_one(
-            {"_id": ObjectId(mongo_id)},
-            {"$set": {"openai": content}}
+            {"_id": ObjectId(mongo_id)}, {"$set": {"openai": content}}
         )
         return result.modified_count
-
 
     @classmethod
     def generate_image_from_prompt(cls, prompt: str, size="1024x1024") -> str:
         response = client.images.generate(
-            model="dall-e-3",
-            prompt=prompt,
-            size=size,
-            quality="standard",
-            n=1
+            model="dall-e-3", prompt=prompt, size=size, quality="standard", n=1
         )
         return response.data[0].url  # This is the direct image URL
 
@@ -65,7 +60,7 @@ class OpenAI:
 
         campaign_response = client.chat.completions.create(
             model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": campaign_prompt}]
+            messages=[{"role": "user", "content": campaign_prompt}],
         )
 
         campaign_json = json.loads(campaign_response.choices[0].message.content)
@@ -91,14 +86,18 @@ class OpenAI:
         """
 
         insta_response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": insta_prompt}]
+            model="gpt-3.5-turbo", messages=[{"role": "user", "content": insta_prompt}]
         )
 
         insta_posts = json.loads(insta_response.choices[0].message.content)
 
         for post in insta_posts:
-            prompt = "Create a realistic image for an instagram post using this prompt:" + post["image_prompt"]  + "This is the post caption:" + post["caption"]
+            prompt = (
+                "Create a realistic image for an instagram post using this prompt:"
+                + post["image_prompt"]
+                + "This is the post caption:"
+                + post["caption"]
+            )
             image_url = cls.generate_image_from_prompt(prompt)
             post["image_url"] = image_url  # Add actual image to your result
 
@@ -115,8 +114,7 @@ class OpenAI:
         """
 
         blog_response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": blog_prompt}]
+            model="gpt-3.5-turbo", messages=[{"role": "user", "content": blog_prompt}]
         )
 
         blog_text = blog_response.choices[0].message.content
@@ -124,19 +122,19 @@ class OpenAI:
         # STEP 4: Save all data into nested Mongo structure
         mongo.db.businesses.update_one(
             {"_id": ObjectId(mongo_id)},
-            {"$set": {
-                "openai": {
-                    "campaign": campaign_json,
-                    "instagram_posts": insta_posts,
-                    "blog": blog_text
+            {
+                "$set": {
+                    "openai": {
+                        "campaign": campaign_json,
+                        "instagram_posts": insta_posts,
+                        "blog": blog_text,
+                    }
                 }
-            }}
+            },
         )
 
         return {
             "campaign": campaign_json,
             "instagram_posts": insta_posts,
-            "blog": blog_text
+            "blog": blog_text,
         }
-
-

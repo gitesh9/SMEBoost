@@ -3,7 +3,7 @@
     class="mb-4 text-4xl pt-8 font-bold text-gray-900 dark:text-white font-stretch-200% font-serif text-center sm:text-3xl">
     AI Content Generation
   </h1>
-  <form action="#">
+  <form [formGroup]="contentForm" (ngSubmit)="onSubmit()">
     <div class="lg:grid lg:grid-cols-2 sm:flex sm:flex-col md:flex md:flex-col pb-8 gap-9 w-full">
       <app-business-details></app-business-details>
       <app-product-details></app-product-details>
