@@ -32,7 +32,7 @@ class ContentIn(BaseModel):
                        8. CTA suggestions
                        9. posting schedule
                        10. platform focus
-
+                       
                        Respond in valid JSON only.
                        """
         if not campaign_json:
@@ -49,10 +49,12 @@ class ContentIn(BaseModel):
                             generate 4 Instagram posts.
     
                             For each post, include:
-                            - caption
-                            - hashtags
-                            - image prompt (for AI image generation)
-                            Return a list of 5 posts in JSON format.
+                            1. caption
+                            2. hashtags
+                            3. image prompt (for AI image generation)
+                            Return a list of 4 posts in JSON format.
+                            Return the following as valid JSON only (list of objects):
+                            
                             """
 
         return {

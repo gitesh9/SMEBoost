@@ -51,9 +51,15 @@ async def submit_form(request: Request):
         result = mongo.db.businesses.find_one(
             {"_id": ObjectId(mongo_id)}, {"_id": 0, "openai": 1}
         )["openai"]
+        status = 'exists'
     else:
         result = OpenAIManager.generate_campaign(raw, mongo_id)
-    return {"status": "updated", "id": str(mongo_id), "result": result}
+        status = "streamline"
+    return {
+        "status": status,
+        "id": str(mongo_id),
+        "result": result
+    }
 
 
 @router.get("/stream/{id}")

@@ -1,5 +1,7 @@
+import base64
 import json
 import re
+import requests
 import threading
 from openai import OpenAI
 from bson import ObjectId
@@ -27,7 +29,16 @@ class OpenAIManager:
             response = client.images.generate(
                 model="dall-e-3", prompt=prompt, size=size, quality="standard", n=1
             )
-            return response.data[0].url
+            image_url = response.data[0].url  # Get the image URL
+            img_response = requests.get(image_url)
+            if img_response.status_code == 200:
+                image_bytes = img_response.content
+                # Now you can save or process the image bytes
+                with open('generated_image.png', 'wb') as f:
+                    f.write(image_bytes)
+            else:
+                print('Failed to download image')
+            return image_url, image_bytes
         except Exception as e:
             print("Image generation failed:", e)
             return None
@@ -59,39 +70,39 @@ class OpenAIManager:
             "campaign": campaign_json,
         }
 
-    @classmethod
-    def _generate_content_async(cls, product, campaign_json, business, mongo_id):
-        try:
-            # 1. Instagram Posts
-            insta_prompt = ContentIn.get_prompts(business, product, campaign_json)[
-                "insta_prompt"
-            ]
-
-            insta_response = client.chat.completions.create(
-                model="gpt-3.5-turbo",
-                messages=[{"role": "user", "content": insta_prompt}],
-            )
-            insta_posts = json.loads(insta_response.choices[0].message.content)
-
-            # Add images
-            for post in insta_posts["posts"]:
-                prompt = f"Create a realistic image for an Instagram post using this prompt: {post['image_prompt']} Caption: {post['caption']}"
-                post["image_url"] = cls.generate_image_from_prompt(prompt)
-
-            cls.attach_openai_data(mongo_id, {"openai.instagram_posts": insta_posts})
-
-            # 2. Blog
-            blog_prompt = f"""Write a 1000-word SEO blog post for campaign: {campaign_json['campaign_name']}"""
-            blog_response = client.chat.completions.create(
-                model="gpt-3.5-turbo",
-                messages=[{"role": "user", "content": blog_prompt}],
-            )
-            blog_text = blog_response.choices[0].message.content
-
-            cls.attach_openai_data(mongo_id, {"openai.blog": blog_text})
-
-        except Exception as e:
-            print("Async content generation failed:", str(e))
+    # @classmethod
+    # def _generate_content_async(cls, product, campaign_json, business, mongo_id):
+    #     try:
+    #         # 1. Instagram Posts
+    #         insta_prompt = ContentIn.get_prompts(business, product, campaign_json)[
+    #             "insta_prompt"
+    #         ]
+    #
+    #         insta_response = client.chat.completions.create(
+    #             model="gpt-3.5-turbo",
+    #             messages=[{"role": "user", "content": insta_prompt}],
+    #         )
+    #         insta_posts = json.loads(insta_response.choices[0].message.content)
+    #
+    #         # Add images
+    #         for post in insta_posts["posts"]:
+    #             prompt = f"Create a realistic image for an Instagram post using this prompt: {post['image_prompt']} Caption: {post['caption']}"
+    #             post["image_url"] = cls.generate_image_from_prompt(prompt)
+    #
+    #         cls.attach_openai_data(mongo_id, {"openai.instagram_posts": insta_posts})
+    #
+    #         # 2. Blog
+    #         blog_prompt = f"""Write a 1000-word SEO blog post for campaign: {campaign_json['campaign_name']}"""
+    #         blog_response = client.chat.completions.create(
+    #             model="gpt-3.5-turbo",
+    #             messages=[{"role": "user", "content": blog_prompt}],
+    #         )
+    #         blog_text = blog_response.choices[0].message.content
+    #
+    #         cls.attach_openai_data(mongo_id, {"openai.blog": blog_text})
+    #
+    #     except Exception as e:
+    #         print("Async content generation failed:", str(e))
 
     @classmethod
     def stream_full_campaign_response(cls, mongo_id):
@@ -137,18 +148,20 @@ class OpenAIManager:
                 for chunk in insta_response:
                     if chunk.choices:
                         token = chunk.choices[0].delta.content
-                        print(token)
                         if token:
                             insta_content += token
-                            yield f"data: {json.dumps({'instagram_posts': token})}\n\n"
+                            # yield f"data: {json.dumps({'instagram_posts': token})}\n\n"
 
-                insta_content = re.sub(r",\s*}", "}", insta_content)
                 # Remove trailing commas before ]
+                insta_content = re.sub(r",\s*}", "}", insta_content)
                 insta_content = re.sub(r",\s*]", "]", insta_content)
                 insta_posts = json.loads(insta_content)
                 for post in insta_posts:
                     img_prompt = f"Create a realistic image for Instagram post: {post['image_prompt']} Caption: {post['caption']}"
-                    post["image_url"] = cls.generate_image_from_prompt(img_prompt)
+                    image_url, image_bytes = cls.generate_image_from_prompt(img_prompt)
+                    post["image_url"] = image_url
+                    post["image_file"] = base64.b64encode(image_bytes).decode("utf-8")
+                    yield f"data: {json.dumps({'instagram_posts': post})}\n\n"
 
                 # ▶️ Blog Stream
                 blog_prompt = f"""Write a 1000-word SEO blog post for campaign: {campaign_json['campaign_name']}"""
@@ -173,7 +186,7 @@ class OpenAIManager:
                     "instagram_posts": insta_posts,
                     "blog": blog_content,
                 }
-                yield f"event: status: Complete"
+                yield 'data: {"status": "Complete"}\n\n'
                 cls.attach_openai_data(
                     mongo_id,
                     {
