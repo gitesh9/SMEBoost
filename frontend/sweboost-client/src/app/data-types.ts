@@ -3,8 +3,9 @@ export interface DataResponse {
   result: Result,
   status: string,
 }
-interface Result {
+export interface Result {
   blog?: string,
   campaign: object,
   instagram_posts?: object[],
+  status?: string,
 }

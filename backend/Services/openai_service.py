@@ -1,4 +1,5 @@
 import json
+import re
 import threading
 from openai import OpenAI
 from bson import ObjectId
@@ -113,10 +114,11 @@ class OpenAIManager:
                 )
                 campaign_content = ""
                 for chunk in campaign_response:
-                    token = chunk.choices[0].delta.content
-                    if token:
-                        campaign_content += token
-                        yield f"data: {json.dumps({'campaign': token})}\n\n"
+                    if chunk.choices:
+                        token = chunk.choices[0].delta.content
+                        if token:
+                            campaign_content += token
+                            yield f"data: {json.dumps({'campaign': token})}\n\n"
 
                 campaign_json = json.loads(campaign_content)
 
@@ -133,14 +135,18 @@ class OpenAIManager:
                 )
                 insta_content = ""
                 for chunk in insta_response:
-                    token = chunk.choices[0].delta.content
-                    if token:
-                        insta_content += token
-                        yield f"data: {json.dumps({'insta_post': token})}\n\n"
+                    if chunk.choices:
+                        token = chunk.choices[0].delta.content
+                        print(token)
+                        if token:
+                            insta_content += token
+                            yield f"data: {json.dumps({'instagram_posts': token})}\n\n"
 
-                # Add image URLs
+                insta_content = re.sub(r",\s*}", "}", insta_content)
+                # Remove trailing commas before ]
+                insta_content = re.sub(r",\s*]", "]", insta_content)
                 insta_posts = json.loads(insta_content)
-                for post in insta_posts["posts"]:
+                for post in insta_posts:
                     img_prompt = f"Create a realistic image for Instagram post: {post['image_prompt']} Caption: {post['caption']}"
                     post["image_url"] = cls.generate_image_from_prompt(img_prompt)
 
@@ -155,10 +161,11 @@ class OpenAIManager:
                 )
                 blog_content = ""
                 for chunk in blog_response:
-                    token = chunk.choices[0].delta.content
-                    if token:
-                        blog_content += token
-                        yield f"data: {json.dumps({'blog': token})}\n\n"
+                    if chunk.choices:
+                        token = chunk.choices[0].delta.content
+                        if token:
+                            blog_content += token
+                            yield f"data: {json.dumps({'blog': token})}\n\n"
 
                 # ▶️ Final structured JSON (optional)
                 final_data = {
@@ -166,7 +173,7 @@ class OpenAIManager:
                     "instagram_posts": insta_posts,
                     "blog": blog_content,
                 }
-                yield f"event: complete\ndata: {json.dumps(final_data)}\n\n"
+                yield f"event: status: Complete"
                 cls.attach_openai_data(
                     mongo_id,
                     {
