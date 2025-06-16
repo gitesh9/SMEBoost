@@ -41,6 +41,15 @@ tailwind.config = {
         'Segoe UI Symbol',
         'Noto Color Emoji'
       ]
-    }
+    },
+    fontSize: {
+      '7xl': '4.5rem', // Custom font size for text-7xl
+    },
+    lineHeight: {
+      '7xl': '5.5rem', // Custom line height for text-7xl
+    },
+    screens: {
+        'xs': '320px',  // Example for screens that are 320px and up
+    },
   }
 }

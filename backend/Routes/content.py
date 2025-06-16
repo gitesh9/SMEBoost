@@ -62,9 +62,7 @@ async def submit_form(request: Request):
         "result": result
     }
 
-@router.get("/stream")
-def stream_campaign(request: Request):
-    data = request.headers['id']
-    return OpenAIManager.stream_full_campaign_response(data)
-
+@router.get("/stream/{id}")
+def stream_campaign(id: str):
+    return OpenAIManager.stream_full_campaign_response(id)
 
