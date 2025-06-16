@@ -10,6 +10,7 @@ from bson.objectid import ObjectId
 router = APIRouter()
 mongo = MongoService()
 
+
 @router.post("/form")
 async def submit_form(request: Request):
     raw = await request.json()
@@ -39,14 +40,10 @@ async def submit_form(request: Request):
         inserted_id = mongo.db.businesses.insert_one(raw).inserted_id
         mongo_id = inserted_id
 
-
     def has_instagram_posts(mongo_id):
         result = mongo.db.businesses.find_one(
-            {
-                "_id": ObjectId(mongo_id),
-                "openai.instagram_posts": {"$exists": True}
-            },
-            {"_id": 0, "openai.instagram_posts": 1}
+            {"_id": ObjectId(mongo_id), "openai.instagram_posts": {"$exists": True}},
+            {"_id": 0, "openai.instagram_posts": 1},
         )
         return result is not None
 
@@ -56,13 +53,9 @@ async def submit_form(request: Request):
         )["openai"]
     else:
         result = OpenAIManager.generate_campaign(raw, mongo_id)
-    return {
-        "status": "updated",
-        "id": str(mongo_id),
-        "result": result
-    }
+    return {"status": "updated", "id": str(mongo_id), "result": result}
+
 
 @router.get("/stream/{id}")
 def stream_campaign(id: str):
     return OpenAIManager.stream_full_campaign_response(id)
-
