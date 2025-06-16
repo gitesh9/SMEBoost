@@ -12,6 +12,8 @@ import { BusinessDetails } from './content-creation-form/business-details/busine
 import { CustomerInsights } from './content-creation-form/customer-insights/customer-insights';
 import { ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClient } from '@angular/common/http';
+import { BlogView } from './blog-view/blog-view';
+import { SocialMediaCard } from './blog-view/social-media-card/social-media-card';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,8 @@ import { provideHttpClient } from '@angular/common/http';
     BrandingDetails,
     BusinessDetails,
     CustomerInsights,
+    BlogView,
+    SocialMediaCard,
   ],
   imports: [
     BrowserModule,

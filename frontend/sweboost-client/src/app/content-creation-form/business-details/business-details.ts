@@ -17,7 +17,6 @@ export class BusinessDetails implements OnInit {
   }
 
   onFileSelected(event: Event) {
-    console.log('see here', event);
     const input = event.target as HTMLInputElement;
     if (!input.files?.length) {
       this.businessForm.get('logo')?.setValue(null);
