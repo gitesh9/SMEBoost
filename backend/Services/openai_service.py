@@ -34,10 +34,10 @@ class OpenAIManager:
             if img_response.status_code == 200:
                 image_bytes = img_response.content
                 # Now you can save or process the image bytes
-                with open('generated_image.png', 'wb') as f:
+                with open("generated_image.png", "wb") as f:
                     f.write(image_bytes)
             else:
-                print('Failed to download image')
+                print("Failed to download image")
             return image_url, image_bytes
         except Exception as e:
             print("Image generation failed:", e)
@@ -153,11 +153,11 @@ class OpenAIManager:
                             # yield f"data: {json.dumps({'instagram_posts': token})}\n\n"
 
                 # Remove trailing commas before ]
-                insta_content = re.sub(r',\s*}', '}', insta_content)
+                insta_content = re.sub(r",\s*}", "}", insta_content)
                 # Remove trailing commas before ]
-                insta_content = re.sub(r',\s*]', ']', insta_content)
+                insta_content = re.sub(r",\s*]", "]", insta_content)
                 insta_posts = json.loads(insta_content)
-                print("ohoo",insta_posts)
+                print("ohoo", insta_posts)
                 for post in insta_posts:
                     img_prompt = f"Create a realistic image for Instagram post: {post['image_prompt']} Caption: {post['caption']}"
                     image_url, image_bytes = cls.generate_image_from_prompt(img_prompt)
