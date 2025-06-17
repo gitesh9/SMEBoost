@@ -155,7 +155,7 @@ export class BlogView implements OnInit {
   }
 
   isHomeImgAvailable(): boolean {
-    return this.homeImg && Object.keys(this.homeImg).length > 0;
+    return this.homeImg.imgUrl !== '';
   }
 }
 

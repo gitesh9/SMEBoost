@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "sweboost-client": {
+    "smeboost-client": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -46,7 +46,7 @@
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumError": "50kB"
                 }
               ],
               "outputHashing": "all"
@@ -63,10 +63,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "sweboost-client:build:production"
+              "buildTarget": "smeboost-client:build:production"
             },
             "development": {
-              "buildTarget": "sweboost-client:build:development"
+              "buildTarget": "smeboost-client:build:development"
             }
           },
           "defaultConfiguration": "development"

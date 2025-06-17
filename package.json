@@ -1,5 +1,5 @@
 {
-    "name": "sweboost",
+    "name": "smeboost",
     "version": "1.0.0",
     "description": "This is the frontend for **SMEBoost**, an AI-powered content creation platform for small and local businesses. Built using Angular, this SPA collects business data, connects to AI via backend APIs, and lets users generate personalized content — all in one click.",
     "main": "index.js",
@@ -8,19 +8,19 @@
         "start": "cd ./frontend/sweboost-client && npm run start",
         "test-frontend": "cd ./frontend/sweboost-client && ng test --watch=false --browsers=ChromeHeadless",
         "test-backend": "cd backend && .\\venv\\Scripts\\python -m pytest || if %errorlevel%==5 exit 0",
-        "lint-frontend": "cd ./frontend/sweboost-client && ng lint --fix",
+        "lint-frontend": "cd ./frontend/smeboost-client && ng lint --fix",
         "lint-backend": "bash ./lint-backend.sh"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/gitesh9/SWEBoost.git"
+        "url": "git+https://github.com/gitesh9/smeboost.git"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "type": "commonjs",
     "bugs": {
-        "url": "https://github.com/gitesh9/SWEBoost/issues"
+        "url": "https://github.com/gitesh9/smeboost/issues"
     },
-    "homepage": "https://github.com/gitesh9/SWEBoost#readme"
+    "homepage": "https://github.com/gitesh9/smeboost#readme"
 }
