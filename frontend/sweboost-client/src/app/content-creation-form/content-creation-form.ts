@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataResponse } from '../data-types';
 import { GlobalStore } from '../global-store';
 import { API_URL } from '../const';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-content-creation-form',
@@ -13,8 +14,9 @@ import { API_URL } from '../const';
 })
 export class ContentCreationForm implements OnInit {
   contentForm!: FormGroup;
+  loading = false
 
-  constructor(private http: HttpClient, public fb: FormBuilder, public service: GlobalStore) { }
+  constructor(private http: HttpClient, public fb: FormBuilder, public service: GlobalStore, public router: Router) { }
 
   ngOnInit() {
     this.contentForm = this.fb.group({
@@ -53,23 +55,23 @@ export class ContentCreationForm implements OnInit {
         new Error('Stream already active')
         return
       }
+      this.loading = true;
       console.log('Submitted form:', this.contentForm.value);
       const data = { ...this.contentForm.value }
       const headers = new HttpHeaders({
         contentType: 'application/json'
       })
+      this.contentForm.disable();
       this.http.post(API_URL + '/form', data, { headers }).subscribe({
         next: (res) => {
           const data: DataResponse = res as DataResponse;
-          if (!data.result.instagram_posts) {
-            this.service.getStream(data.id);
-          }
-          else {
-            this.service.myData = data;
-          }
+          this.service.getStream(data.id);
+          this.router.navigate(['blog'])
+          this.loading = false;
         },
         error: (err) => console.error('Error:', err)
       });
+      this.contentForm.enable();
     } else {
       console.log('Form is invalid', this.contentForm.value);
     }

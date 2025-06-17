@@ -130,8 +130,33 @@ class OpenAIManager:
                         if token:
                             campaign_content += token
                             # yield f"data: {json.dumps({'campaign': token})}\n\n"
+
+                home_image_url, home_image_bytes = cls.generate_image_from_prompt(
+                    "homepage_image: Provide a AI image for a visually appealing image specifically designed to be displayed at the top of the homepage. This image should represent the campaign’s core message and attract visitors."
+                )
                 campaign_json = json.loads(campaign_content)
+                campaign_json["home_image_url"] = home_image_url
+                campaign_json["home_image_file"] = base64.b64encode(
+                    home_image_bytes
+                ).decode("utf-8")
                 yield f"data: {json.dumps({'campaign': campaign_json})}\n\n"
+
+                # ▶️ Blog Stream
+                blog_prompt = f"""Write a 1000-word SEO blog post for campaign: {campaign_json['campaign_name']}. Please include [instagram_post_1] in the content where you think an Instagram post should be embedded."""
+                yield "event: blog\n"
+                yield 'data: {"status": "generating blog"}\n\n'
+                blog_response = client.chat.completions.create(
+                    model="gpt-3.5-turbo",
+                    messages=[{"role": "user", "content": blog_prompt}],
+                    stream=True,
+                )
+                blog_content = ""
+                for chunk in blog_response:
+                    if chunk.choices:
+                        token = chunk.choices[0].delta.content
+                        if token:
+                            blog_content += token
+                yield f"data: {json.dumps({'blog': blog_content})}\n\n"
 
                 # ▶️ Instagram Posts Stream
                 insta_prompt = ContentIn.get_prompts(business, product, campaign_json)[
@@ -157,30 +182,12 @@ class OpenAIManager:
                 # Remove trailing commas before ]
                 insta_content = re.sub(r",\s*]", "]", insta_content)
                 insta_posts = json.loads(insta_content)
-                print("ohoo", insta_posts)
                 for post in insta_posts:
                     img_prompt = f"Create a realistic image for Instagram post: {post['image_prompt']} Caption: {post['caption']}"
                     image_url, image_bytes = cls.generate_image_from_prompt(img_prompt)
                     post["image_url"] = image_url
                     post["image_file"] = base64.b64encode(image_bytes).decode("utf-8")
                     yield f"data: {json.dumps({'instagram_posts': post})}\n\n"
-
-                # ▶️ Blog Stream
-                blog_prompt = f"""Write a 1000-word SEO blog post for campaign: {campaign_json['campaign_name']}"""
-                yield "event: blog\n"
-                yield 'data: {"status": "generating blog"}\n\n'
-                blog_response = client.chat.completions.create(
-                    model="gpt-3.5-turbo",
-                    messages=[{"role": "user", "content": blog_prompt}],
-                    stream=True,
-                )
-                blog_content = ""
-                for chunk in blog_response:
-                    if chunk.choices:
-                        token = chunk.choices[0].delta.content
-                        if token:
-                            blog_content += token
-                yield f"data: {json.dumps({'blog': blog_content})}\n\n"
 
                 # ▶️ Final structured JSON (optional)
                 final_data = {

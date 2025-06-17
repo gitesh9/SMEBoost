@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms';
+import { GlobalStore } from '../../global-store';
 
 @Component({
   selector: 'app-business-details',
@@ -10,7 +11,7 @@ import { ControlContainer, FormGroup, FormGroupDirective } from '@angular/forms'
 })
 export class BusinessDetails implements OnInit {
   businessForm!: FormGroup;
-  constructor(private controlContainer: ControlContainer) { }
+  constructor(private controlContainer: ControlContainer, public service: GlobalStore) { }
 
   ngOnInit(): void {
     this.businessForm = this.controlContainer.control?.get('businessDetails') as FormGroup;

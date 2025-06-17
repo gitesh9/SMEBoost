@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
-import { DataResponse } from './data-types';
+import { DataResponse, ResponseAIType } from './data-types';
 import { Subject } from 'rxjs';
 import { API_URL } from './const';
 @Injectable({
   providedIn: 'root'
 })
 export class GlobalStore {
-  private dataSubject = new Subject<DataResponse>();
+  private dataSubject = new Subject<ResponseAIType>();
   private data$ = this.dataSubject.asObservable();
   private _myData: DataResponse = {
     id: '',
     result: {
       blog: '',
-      campaign: {},
+      campaign: {
+        campaign_name: ''
+      },
       instagram_posts: [],
       status: 'Updating'
     },
@@ -41,6 +43,7 @@ export class GlobalStore {
       if (payload.status == 'Complete' || payload === '[DONE]') {
         // console.log("DATA RECIEVED FINALLY: ", this._myData)
         console.log("DATA RECIEVED FINALLY: ", this._myData)
+        this.streamActive = false;
         this.source?.close();
       }
 
@@ -59,15 +62,15 @@ export class GlobalStore {
         this._myData.result.blog = payload.blog;
       }
 
-      this.dataSubject.next(event.data)
+      this.dataSubject.next(payload)
     };
 
     this.source.onerror = (error) => {
+      this.source?.close();
       this.streamActive = false;
       console.log('FIRST SHOW DATA ERROR', error);
       console.log('FIRST SHOW DATA:', this._myData);
       console.error('Stream Error:', error);
-      this.source?.close();
     };
 
   }
@@ -83,6 +86,9 @@ export class GlobalStore {
 
   set myData(data: DataResponse) {
     this._myData = { ...data }
+  }
+  get myData() {
+    return this._myData
   }
 
   stopStreaming() {

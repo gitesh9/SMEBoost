@@ -14,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClient } from '@angular/common/http';
 import { BlogView } from './blog-view/blog-view';
 import { SocialMediaCard } from './blog-view/social-media-card/social-media-card';
+import { DemoBlog } from './demo-blog/demo-blog';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { SocialMediaCard } from './blog-view/social-media-card/social-media-card
     CustomerInsights,
     BlogView,
     SocialMediaCard,
+    DemoBlog,
   ],
   imports: [
     BrowserModule,
