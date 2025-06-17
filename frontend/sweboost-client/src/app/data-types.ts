@@ -9,3 +9,12 @@ export interface Result {
   instagram_posts?: object[],
   status?: string,
 }
+
+export interface ResponseAIType {
+  id?: string,
+  blog?: string,
+  campaign?: string,
+  instagram_posts?: string,
+  instagram_image?: string,
+  status?: string,
+}

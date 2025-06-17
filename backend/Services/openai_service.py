@@ -129,9 +129,9 @@ class OpenAIManager:
                         token = chunk.choices[0].delta.content
                         if token:
                             campaign_content += token
-                            yield f"data: {json.dumps({'campaign': token})}\n\n"
-
+                            # yield f"data: {json.dumps({'campaign': token})}\n\n"
                 campaign_json = json.loads(campaign_content)
+                yield f"data: {json.dumps({'campaign': campaign_json})}\n\n"
 
                 # ▶️ Instagram Posts Stream
                 insta_prompt = ContentIn.get_prompts(business, product, campaign_json)[
@@ -153,9 +153,11 @@ class OpenAIManager:
                             # yield f"data: {json.dumps({'instagram_posts': token})}\n\n"
 
                 # Remove trailing commas before ]
-                insta_content = re.sub(r",\s*}", "}", insta_content)
-                insta_content = re.sub(r",\s*]", "]", insta_content)
+                insta_content = re.sub(r',\s*}', '}', insta_content)
+                # Remove trailing commas before ]
+                insta_content = re.sub(r',\s*]', ']', insta_content)
                 insta_posts = json.loads(insta_content)
+                print("ohoo",insta_posts)
                 for post in insta_posts:
                     img_prompt = f"Create a realistic image for Instagram post: {post['image_prompt']} Caption: {post['caption']}"
                     image_url, image_bytes = cls.generate_image_from_prompt(img_prompt)
@@ -178,7 +180,7 @@ class OpenAIManager:
                         token = chunk.choices[0].delta.content
                         if token:
                             blog_content += token
-                            yield f"data: {json.dumps({'blog': token})}\n\n"
+                yield f"data: {json.dumps({'blog': blog_content})}\n\n"
 
                 # ▶️ Final structured JSON (optional)
                 final_data = {

@@ -60,14 +60,11 @@ export class ContentCreationForm implements OnInit {
       })
       this.http.post(API_URL + '/form', data, { headers }).subscribe({
         next: (res) => {
-          console.log('???res: ', res);
           const data: DataResponse = res as DataResponse;
           if (!data.result.instagram_posts) {
-            console.log('Submitted form:', this.contentForm.value);
             this.service.getStream(data.id);
           }
           else {
-            console.log('???', data);
             this.service.myData = data;
           }
         },
