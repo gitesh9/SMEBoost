@@ -6,18 +6,6 @@ html, body {
   margin: 0;
 }
 
-/* Parent container should take full height, but allow for the fixed footer */
-.container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  min-width: 100vw;
-  color: whitesmoke;
-}
-
-/* Main content should grow and fill available space */
-.main-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+router-outlet * {
+  outline: 1px dashed yellow;
 }

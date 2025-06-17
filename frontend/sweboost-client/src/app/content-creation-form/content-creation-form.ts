@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataResponse } from '../data-types';
 import { GlobalStore } from '../global-store';
+import { API_URL } from '../const';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-content-creation-form',
@@ -11,10 +13,10 @@ import { GlobalStore } from '../global-store';
   styleUrl: './content-creation-form.css'
 })
 export class ContentCreationForm implements OnInit {
-  URL_CONST = 'http://127.0.0.1:8000/api/form/';
   contentForm!: FormGroup;
+  loading = false
 
-  constructor(private http: HttpClient, public fb: FormBuilder, private service: GlobalStore) { }
+  constructor(private http: HttpClient, public fb: FormBuilder, public service: GlobalStore, public router: Router) { }
 
   ngOnInit() {
     this.contentForm = this.fb.group({
@@ -49,25 +51,27 @@ export class ContentCreationForm implements OnInit {
 
   onSubmit() {
     if (this.contentForm.valid) {
+      if (this.service.streamActive) {
+        new Error('Stream already active')
+        return
+      }
+      this.loading = true;
       console.log('Submitted form:', this.contentForm.value);
       const data = { ...this.contentForm.value }
       const headers = new HttpHeaders({
         contentType: 'application/json'
       })
-      this.http.post(this.URL_CONST, data, { headers }).subscribe({
+      this.contentForm.disable();
+      this.http.post(API_URL + '/form', data, { headers }).subscribe({
         next: (res) => {
           const data: DataResponse = res as DataResponse;
-          if (data.result.instagram_posts?.length == 0) {
-            this.service.getData(data.id);
-          }
-          else {
-            this.service.myData = data;
-          }
-          this.service.getData(data.id);
-
+          this.service.getStream(data.id);
+          this.router.navigate(['blog'])
+          this.loading = false;
         },
         error: (err) => console.error('Error:', err)
       });
+      this.contentForm.enable();
     } else {
       console.log('Form is invalid', this.contentForm.value);
     }

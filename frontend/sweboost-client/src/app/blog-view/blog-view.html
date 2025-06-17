@@ -2,114 +2,173 @@
   class="bg-white antialiased dark:bg-gray-900 rounded-xl flex flex-col justify-center px-4 py-8 max-h-max max-w-7xl">
   <div class="mx-auto max-w-screen-sm text-center lg:mb-16 mb-8">
     <h2 class="mb-4 text-3xl lg:text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Our Blog</h2>
-    <p class="font-light text-gray-500 sm:text-xl dark:text-gray-400">We use an agile approach to test assumptions and
-      connect with the needs of your audience early and often.</p>
-  </div>
-  <div class="flex flex-row justify-evenly">
-    <app-social-media-card></app-social-media-card>
-    <app-social-media-card></app-social-media-card>
+    <div *ngIf="campaignName.length>0 && campaignTheme.length>0; else campaignLoading">
+      <p class=" font-normal text-gray-500 sm:text-xl dark:text-gray-400">{{campaignName}}</p>
+      <p class="font-light text-gray-500 sm:text-xl dark:text-gray-400">{{campaignTheme}}</p>
+    </div>
+    <ng-template #campaignLoading>
+      <div role="status" class="space-y-2.5 animate-pulse w-full">
+        <div class="flex items-center w-full">
+          <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32"></div>
+          <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
+          <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+        </div>
+        <div class="flex items-center w-full">
+          <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
+          <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+          <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
+        </div>
+        <div class="flex items-center w-full max-w-[400px]">
+          <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+          <div class="h-2.5 ms-2 bg-gray-200 rounded-full dark:bg-gray-700 w-80"></div>
+          <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+        </div>
+      </div>
+    </ng-template>
   </div>
   <div class="mx-auto w-full px-4 2xl:px-0">
     <div class="mx-auto w-full">
-      <!-- <div class="text-center">
-        <h1 class="font-semibold text-gray-900 dark:text-white sm:text-2xl" style="font-size: 3rem;">Blog
-        </h1>
-      </div> -->
-      <div class="my-8 xl:mb-16 xl:mt-12 object-contain">
-        <img class=" object-contain" src="assets/cadb.png" alt="" />
+      <div class="my-8 xl:mb-16 xl:mt-12 object-contain" *ngIf="isHomeImgAvailable();else homeImageLoading">
+        <img class=" object-contain" [src]="homeImg.imgUrl" [alt]="'data:image/png;base64,' + homeImg.imgFile" />
       </div>
-      <div class="mx-auto max-w-2xl space-y-6">
-        <p class="text-base font-normal text-gray-500 dark:text-gray-400">The iMac "M1" 8-Core CPU/8-Core GPU/4 USB-C
-          Shaped Ports (2021) model features a 5-nm Apple M1 processor with 8 cores (4 performance cores and 4
-          efficiency cores), an 8-core GPU, a 16-core Neural Engine, 8 GB of onboard RAM, and a 1 TB onboard SSD.</p>
-
-        <p class="text-base font-normal text-gray-500 dark:text-gray-400">
-          This all is housed in a wafer thin aluminum case with flat edges that includes a 23.5" 4480x2520, 218 PPI,
-          LED-backlit, "True Tone" widescreen "Retina 4.5K" display mounted on a svelte aluminum stand. This specific
-          model is offered in the a two-tone Blue color. It also has an integrated 1080p FaceTime HD camera, a
-          "studio-quality three-mic array" and a "high-fidelity six-speaker system" that supports Spatial Audio with
-          Dolby Atmos.
-        </p>
-
-        <p class="text-base font-semibold text-gray-900 dark:text-white">Key Features and Benefits:</p>
-        <ul class="list-outside list-disc space-y-4 pl-4 text-base font-normal text-gray-500 dark:text-gray-400">
-          <li>
-            <span class="font-semibold text-gray-900 dark:text-white"> Brilliant 4.5K Retina display: </span>
-            see the big picture and all the detailsSee it all in sharp, glorious detail on the immersive 24-inch 4.5K
-            Retina display. The P3 wide color gamut brings what you're watching to life in over a billion colors.
-            Images
-            shine with a brilliant 500 nits of brightness. Industry-leading anti-reflective coating delivers greater
-            comfort and readability. And True Tone technology automatically adjusts the color temperature of your
-            display to the ambient light of your
-            environment, for a more natural viewing experience. So whether you're editing photos, working on
-            presentations, or watching your favorite shows and movies, everything looks incredible on iMac.
-          </li>
-          <li>
-            <span class="font-semibold text-gray-900 dark:text-white"> 1080p FaceTime HD camera: </span>
-            ready for your close-upIt's the best camera system ever in a Mac. Double the resolution for higher-quality
-            video calls. A larger sensor that captures more light. And the advanced image signal processor (ISP) of M1
-            greatly improves image quality. So from collaborating with coworkers to catching up with friends and
-            family,
-            you'll always look your best.
-          </li>
-
-          <li>
-            <span class="font-semibold text-gray-900 dark:text-white"> Studio-quality mics for high-quality
-              conversations: </span>
-            whether you're on a video call with a friend, cutting a track, or recording a podcast, the microphones on
-            iMac make sure you come through loud, crisp, and clear. The studio-quality three-mic array is designed to
-            reduce feedback, so conversations flow more naturally and you interrupt each other less. And beamforming
-            technology helps the mics ignore background noise. Which means everyone hears you - not what's going on
-            around you.
-          </li>
-
-          <li>
-            <span class="font-semibold text-gray-900 dark:text-white"> Six-speaker sound system: audio that really
-              fills
-              a room: </span>
-            the sound system on iMac brings incredible, room-filling audio to any space. Two pairs of force-canceling
-            woofers create rich, deep bass without unwanted vibrations. And each pair is balanced with a
-            high-performance tweeter. The result is a massive, detailed soundstage that takes your movies, music, and
-            more to the next level.
-          </li>
-
-          <li>
-            <span class="font-semibold text-gray-900 dark:text-white"> M1 chip: with great power comes great
-              capability:
-            </span>
-            M1 is the most powerful chip Apple has ever made. macOS Big Sur is an advanced desktop operating system.
-            Combined, they take iMac to entirely new levels of performance, efficiency, and security. iMac wakes from
-            sleep almost instantly, apps launch in a flash, and the whole system feels fluid, smooth, and snappy. With
-            up to 85 percent faster CPU performance and up to two times faster graphics performance than standard
-            21.5-inch iMac models, you can use apps like
-            Xcode and Affinity Photo to compile code in a fraction of the time or edit photos in real time. And it
-            runs
-            cool and quiet even while tackling these intense workloads. That's the power of hardware, software, and
-            silicon - all designed together.
-          </li>
-        </ul>
+      <ng-template #homeImageLoading>
+        <div class="my-8 xl:mb-16 xl:mt-12 object-contain animate-pulse flex justify-center" aria-label="loading...">
+          <div class="flex items-center justify-center h-150 w-150 bg-gray-300 rounded-md dark:bg-gray-700">
+            <svg class="w-10 h-10 text-gray-200 dark:text-gray-600" aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">
+              <path
+                d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM10.5 6a1.5 1.5 0 1 1 0 2.999A1.5 1.5 0 0 1 10.5 6Zm2.221 10.515a1 1 0 0 1-.858.485h-8a1 1 0 0 1-.9-1.43L5.6 10.039a.978.978 0 0 1 .936-.57 1 1 0 0 1 .9.632l1.181 2.981.541-1a.945.945 0 0 1 .883-.522 1 1 0 0 1 .879.529l1.832 3.438a1 1 0 0 1-.031.988Z" />
+              <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z" />
+            </svg>
+          </div>
+        </div>
+      </ng-template>
+      <div class="mx-auto max-w-3xl space-y-6">
+        <ng-container *ngFor="let piece of blogPieces; let i = index">
+          <ng-container [ngSwitch]="piece.type">
+            <ng-container *ngSwitchCase="'text'">
+              <div [innerHTML]="piece.content"></div>
+            </ng-container>
+            <ng-container *ngSwitchCase="'card'">
+              <app-social-media-card [data]="instagramPosts" [ind]="+piece.content"
+                [loading]="+piece.content>=instagramPosts.length"></app-social-media-card>
+            </ng-container>
+          </ng-container>
+        </ng-container>
       </div>
-      <div class="my-6 md:my-12">
-        <iframe class="h-[260px] md:h-[540px] w-full rounded-lg" src="https://www.youtube.com/embed/KaLxCiilHns"
-          title="Flowbite Crash Course in 20 mins | Introduction to UI components using Tailwind CSS" frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      </div>
-      <div class="mx-auto mb-6 max-w-3xl space-y-6 md:mb-12">
-        <p class="text-base font-normal text-gray-500 dark:text-gray-400">Connectivity includes two Thunderbolt / USB
-          4
-          ports and two USB 3 ports (all with a USB-C connector), a 3.5 mm headphone jack conveniently mounted on the
-          left edge of the display, Wi-Fi 6 (802.11ax), and Bluetooth 5.0.</p>
+      <div class="mx-auto max-w-3xl space-y-6 mb-4 flex flex-col items-center" aria-label="loading..."
+        *ngIf="blogPieces.length===0">
+        <div role="status" class="space-y-2.5 animate-pulse w-full" *ngFor="let i of [1,2,3,4,5]">
+          <div class="flex items-center w-full">
+            <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32"></div>
+            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
+            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+          </div>
+          <div class="flex items-center w-full">
+            <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
+            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
+          </div>
+          <div class="flex items-center w-full max-w-[400px]">
+            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+            <div class="h-2.5 ms-2 bg-gray-200 rounded-full dark:bg-gray-700 w-80"></div>
+            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+          </div>
+          <div class="flex items-center w-full">
+            <div class="h-2.5 ms-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
+            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
+          </div>
+          <div class="flex items-center w-full">
+            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-32"></div>
+            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
+            <div class="h-2.5 ms-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
+          </div>
+          <div class="flex items-center w-full">
+            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+            <div class="h-2.5 ms-2 bg-gray-200 rounded-full dark:bg-gray-700 w-80"></div>
+            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+          </div>
+          <!-- <span class="sr-only">Loading...</span> -->
+        </div>
+        <div role="status"
+          class="max-w-sm p-4 md:p-6 border border-gray-200 rounded-xl shadow-sm animate-pulse dark:border-gray-700 space-y-4">
+          <!-- Avatar + text row -->
+          <div class="flex items-center space-x-4">
+            <svg class="w-10 h-10 text-gray-200 dark:text-gray-700" aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z" />
+            </svg>
+            <div class="flex-1">
+              <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-2"></div>
+              <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48"></div>
+            </div>
+          </div>
 
-        <p class="text-base font-normal text-gray-500 dark:text-gray-400">A-Grade/CR: iMacs are in 9/10 Cosmetic
-          Condition and are 100% Fully Functional. iMacs will be shipped in generic packaging and will contain generic
-          accessories. 90 Days Seller Warranty Included. iMacs may show signs of wear like scratches, scuffs and minor
-          dents.</p>
+          <!-- Image placeholder -->
+          <div class="flex items-center justify-center h-75 w-75 bg-gray-300 rounded-md dark:bg-gray-700">
+            <svg class="w-10 h-10 text-gray-200 dark:text-gray-600" aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">
+              <path
+                d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM10.5 6a1.5 1.5 0 1 1 0 2.999A1.5 1.5 0 0 1 10.5 6Zm2.221 10.515a1 1 0 0 1-.858.485h-8a1 1 0 0 1-.9-1.43L5.6 10.039a.978.978 0 0 1 .936-.57 1 1 0 0 1 .9.632l1.181 2.981.541-1a.945.945 0 0 1 .883-.522 1 1 0 0 1 .879.529l1.832 3.438a1 1 0 0 1-.031.988Z" />
+              <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z" />
+            </svg>
+          </div>
+
+          <!-- Text lines -->
+          <div class="space-y-2">
+            <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48"></div>
+            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
+            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
+            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-3/4"></div>
+          </div>
+        </div>
+        <div role="status" class="space-y-2.5 animate-pulse w-full" *ngFor="let i of [1,2,3,4,5]">
+          <div class="flex items-center w-full">
+            <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32"></div>
+            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
+            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+          </div>
+          <div class="flex items-center w-full">
+            <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
+            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
+          </div>
+          <div class="flex items-center w-full max-w-[400px]">
+            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+            <div class="h-2.5 ms-2 bg-gray-200 rounded-full dark:bg-gray-700 w-80"></div>
+            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+          </div>
+          <div class="flex items-center w-full">
+            <div class="h-2.5 ms-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
+            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
+          </div>
+          <div class="flex items-center w-full">
+            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-32"></div>
+            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
+            <div class="h-2.5 ms-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
+          </div>
+          <div class="flex items-center w-full">
+            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+            <div class="h-2.5 ms-2 bg-gray-200 rounded-full dark:bg-gray-700 w-80"></div>
+            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+          </div>
+          <!-- <span class="sr-only">Loading...</span> -->
+        </div>
       </div>
-      <div class="text-center">
-        <a [routerLink]="['services']" routerLinkActive="router-link-active"
+      <div *ngIf="showInstaPost">
+        <ng-container *ngFor="let piece of instagramPosts; let i = index">
+          <ng-container *ngIf="i>imageInd">
+            <app-social-media-card [data]="instagramPosts" [ind]="i" [loading]="false"></app-social-media-card>
+          </ng-container>
+        </ng-container>
+      </div>
+      <div class="text-center" *ngIf="!showInstaPost">
+        <button type="button" (click)="showInstaPost=!showInstaPost"
           class="mb-2 mr-2 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">Show
-          more...</a>
+          more...</button>
       </div>
     </div>
   </div>

@@ -1,6 +1,7 @@
-<div class="flex flex-col h-screen min-w-screen text-white bg-black">
+<div class="flex flex-col h-screen w-screen overflow-hidden text-white bg-black">
   <app-navbar class="h-[67px]"></app-navbar>
-  <main class="flex justify-center overflow-auto my-1 min-h-[calc(100vh-141px)] max-h-[calc(100vh-141px)] flex-1">
+  <main
+    class="flex justify-center overflow-auto my-1 min-h-[calc(100vh-141px)] max-h-[calc(100vh-141px)] flex-1 outline-amber-400">
     <router-outlet></router-outlet>
   </main>
   <app-footer class="h-[74px]"></app-footer>
