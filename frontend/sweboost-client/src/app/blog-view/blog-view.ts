@@ -37,7 +37,7 @@ export class BlogView implements OnInit {
   constructor(private myService: GlobalStore, public router: Router, public cdr: ChangeDetectorRef) {
     this.data = myService.getData();
     this.homeImg = {
-      imgUrl: 'string',
+      imgUrl: '',
       imgFile: '',
     }
   }
@@ -155,7 +155,7 @@ export class BlogView implements OnInit {
   }
 
   isHomeImgAvailable(): boolean {
-    return this.homeImg.imgUrl !== '';
+    return this.homeImg?.imgUrl !== '';
   }
 }
 

@@ -68,10 +68,15 @@ export class ContentCreationForm implements OnInit {
           this.service.getStream(data.id);
           this.router.navigate(['blog'])
           this.loading = false;
+          this.contentForm.enable();
         },
-        error: (err) => console.error('Error:', err)
+        error: (err) => {
+          console.error('Error:', err)
+          this.loading = false;
+          this.contentForm.enable();
+        }
       });
-      this.contentForm.enable();
+      console.log('hehe')
     } else {
       console.log('Form is invalid', this.contentForm.value);
     }

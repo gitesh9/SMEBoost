@@ -33,9 +33,8 @@ class OpenAIManager:
             img_response = requests.get(image_url)
             if img_response.status_code == 200:
                 image_bytes = img_response.content
-                # Now you can save or process the image bytes
-                with open("generated_image.png", "wb") as f:
-                    f.write(image_bytes)
+                # with open("generated_image.png", "wb") as f:
+                #     f.write(image_bytes)
             else:
                 print("Failed to download image")
             return image_url, image_bytes

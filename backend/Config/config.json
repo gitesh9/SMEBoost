@@ -1,7 +1,0 @@
-{
-  "OPENAI_API_KEY": "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",
-  "CLERK_JWT_ISSUER": "https://clerk.YOURDOMAIN.com",
-  "MONGODB_URI": "mongodb+srv://darshangptall:D2ioyBa02YzdWjo9@sme.dlwur5x.mongodb.net/?retryWrites=true&w=majority&appName=sme",
-  "mongodb_password": "D2ioyBa02YzdWjo9",
-  "mongodb_username": "darshangptall"
-}

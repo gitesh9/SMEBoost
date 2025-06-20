@@ -6,10 +6,11 @@ from pydantic import BaseModel
 from typing import Optional, Dict
 from Services.openai_service import OpenAIManager
 from bson.objectid import ObjectId
+from Utils.logger import AppLogger
 
 router = APIRouter()
 mongo = MongoService()
-
+logger = AppLogger()
 
 @router.post("/form")
 async def submit_form(request: Request):
@@ -61,3 +62,6 @@ async def submit_form(request: Request):
 @router.get("/stream/{id}")
 def stream_campaign(id: str):
     return OpenAIManager.stream_full_campaign_response(id)
+
+
+

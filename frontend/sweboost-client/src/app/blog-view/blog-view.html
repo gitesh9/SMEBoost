@@ -28,7 +28,7 @@
   </div>
   <div class="mx-auto w-full px-4 2xl:px-0">
     <div class="mx-auto w-full">
-      <div class="my-8 xl:mb-16 xl:mt-12 object-contain" *ngIf="isHomeImgAvailable();else homeImageLoading">
+      <div class="my-8 xl:mb-16 xl:mt-12 object-contain" *ngIf="isHomeImgAvailable(); else homeImageLoading">
         <img class=" object-contain" [src]="homeImg.imgUrl" [alt]="'data:image/png;base64,' + homeImg.imgFile" />
       </div>
       <ng-template #homeImageLoading>
