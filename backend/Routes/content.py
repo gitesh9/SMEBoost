@@ -12,6 +12,7 @@ router = APIRouter()
 mongo = MongoService()
 logger = AppLogger()
 
+
 @router.post("/form")
 async def submit_form(request: Request):
     raw = await request.json()
@@ -62,6 +63,3 @@ async def submit_form(request: Request):
 @router.get("/stream/{id}")
 def stream_campaign(id: str):
     return OpenAIManager.stream_full_campaign_response(id)
-
-
-

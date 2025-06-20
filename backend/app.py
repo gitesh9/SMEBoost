@@ -19,4 +19,3 @@ app.add_middleware(
 # Include your routes
 app.include_router(content.router, prefix="/api")
 logger.debug("App started")
-
