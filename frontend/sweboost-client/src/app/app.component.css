@@ -4,8 +4,5 @@
 html, body {
   height: 100%;
   margin: 0;
-}
-
-router-outlet * {
-  outline: 1px dashed yellow;
+  background-color: black;
 }
